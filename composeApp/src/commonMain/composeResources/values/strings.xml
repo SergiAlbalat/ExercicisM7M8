@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Exercicis DAMv78</string>
+    <string name="Example">This is a resource string</string>
 </resources>
