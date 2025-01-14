@@ -6,6 +6,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import cat.itb.m78.exercices.State.GoodMorningAndNight
+import cat.itb.m78.exercices.State.SayHello
+import cat.itb.m78.exercices.State.SecretNumber
 import cat.itb.m78.exercices.Stateless.Contact
 import cat.itb.m78.exercices.Stateless.HelloWorld
 import cat.itb.m78.exercices.Stateless.MessagesList
@@ -16,5 +19,5 @@ import org.jetbrains.compose.reload.DevelopmentEntryPoint
 
 @Composable
 internal fun App() = AppTheme {
-    MessagesList()
+    SecretNumber()
 }

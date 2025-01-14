@@ -41,7 +41,7 @@ fun Contact(){
             modifier = Modifier.size(100.dp).clip(RoundedCornerShape(100.dp))
         )
         Text(contact.fullName, fontSize = 2.em, fontWeight = FontWeight.Bold)
-        Spacer(Modifier.height(50.dp))
+        Spacer(Modifier.height(40.dp))
         Card{
             Column(modifier = Modifier.padding(10.dp)) {
                 Row(modifier = Modifier.padding(15.dp)){
