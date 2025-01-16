@@ -4,9 +4,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -20,7 +21,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.em
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import m78exercices.composeapp.generated.resources.Res
 import m78exercices.composeapp.generated.resources.dice_1
@@ -46,11 +48,12 @@ fun DiceRoller(){
         snackbarHost = {
             SnackbarHost(hostState = snackbarHostState)
         },
-    ){ padding ->
+    ){
         Image(
             painter = painterResource(Res.drawable.tapestry),
             contentDescription = null,
-            modifier = Modifier.fillMaxSize()
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.size(1000.dp)
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize()) {
             Image(
@@ -69,15 +72,15 @@ fun DiceRoller(){
                 Text("Roll the dice")
             }
             Row{
-                Dice(dice)
-                Dice(dice2)
+                DiceView(dice)
+                DiceView(dice2)
             }
         }
     }
 }
 
 @Composable
-fun Dice(dice : Int){
+fun DiceView(dice : Int){
     Image(
         painter = painterResource(diceImage(dice)),
         contentDescription = null
