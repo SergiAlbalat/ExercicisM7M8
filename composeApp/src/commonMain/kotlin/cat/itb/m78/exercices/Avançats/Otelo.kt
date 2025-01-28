@@ -1,4 +1,4 @@
-package cat.itb.m78.exercices.ViewModel
+package cat.itb.m78.exercices.Avançats
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
