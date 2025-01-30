@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import cat.itb.m78.exercices.Avançats.OteloApp
 import cat.itb.m78.exercices.Navegation.ManualNav
-import cat.itb.m78.exercices.Navegation.MenuApp
+import cat.itb.m78.exercices.Navegation.TicTacToeNavegation
 import cat.itb.m78.exercices.State.DiceRoller
 import cat.itb.m78.exercices.State.GoodMorningAndNight
 import cat.itb.m78.exercices.State.SayHello
@@ -66,6 +66,8 @@ object Destinaton{
     data object Pages
     @Serializable
     data object Otelo
+    @Serializable
+    data object TicTacToe
 }
 
 @Composable
@@ -106,7 +108,8 @@ fun Navegation(){
         }
         composable<Destinaton.Navegation>{
             NavegationMenuApp(
-                {navController.navigate(Destinaton.Pages)}
+                {navController.navigate(Destinaton.Pages)},
+                {navController.navigate(Destinaton.TicTacToe)}
             )
         }
         composable<Destinaton.Avancats>{
@@ -127,6 +130,7 @@ fun Navegation(){
         composable<Destinaton.ShoppingList> { ShoppingListApp() }
         composable<Destinaton.Pages> { ManualNav() }
         composable<Destinaton.Otelo>{ OteloApp() }
+        composable<Destinaton.TicTacToe> { TicTacToeNavegation() }
     }
 }
 
@@ -224,11 +228,15 @@ fun ViewModelMenuApp(
 
 @Composable
 fun NavegationMenuApp(
-    navegateToPages: ()->Unit
+    navegateToPages: ()->Unit,
+    navegateToTicTacToe: ()->Unit
 ){
     Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
         Button(onClick = navegateToPages){
             Text("ManualNav")
+        }
+        Button(onClick = navegateToTicTacToe){
+            Text("TicTacToe")
         }
     }
 }
