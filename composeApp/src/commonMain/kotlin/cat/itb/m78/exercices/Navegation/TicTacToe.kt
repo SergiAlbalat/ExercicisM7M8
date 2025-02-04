@@ -13,13 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 
 object TicTacToeScreens{
@@ -28,7 +31,7 @@ object TicTacToeScreens{
     @Serializable
     data object Screen2
     @Serializable
-    data class Screen3(val circleWin: Boolean)
+    data class Screen3(val xWin: Boolean)
 }
 
 @Composable
@@ -39,7 +42,10 @@ fun TicTacToeNavegation(){
             TicTacToeScreen1View({navController.navigate(TicTacToeScreens.Screen2)})
         }
         composable<TicTacToeScreens.Screen2> {
-            TicTacToeScreen2App()
+            TicTacToeScreen2App({navController.navigate(TicTacToeScreens.Screen3(it))})
+        }
+        composable<TicTacToeScreens.Screen3> {
+            TicTacToeScreen3View(it.toRoute<TicTacToeScreens.Screen3>().xWin, {navController.navigate(TicTacToeScreens.Screen2)})
         }
     }
 }
@@ -55,15 +61,33 @@ fun TicTacToeScreen1View(navigateToScreen2: ()->Unit){
 
 class TicTacToeViewModel : ViewModel(){
     var xPlayer = true
-    var values = mutableStateOf(List<Boolean?>(9){null})
-    fun changeValue(numeroCasella: Int){
-        if(values.value[numeroCasella] == null){
+    var values = mutableStateOf(List(3){List<Boolean?>(3){null} })
+    fun changeValue(xCord: Int, yCord: Int){
+        if(values.value[yCord][xCord] == null){
             if(xPlayer){
-
+                val newValues = values.value.updateValue(yCord, xCord, true)
+                values.value = newValues
             }else{
-                values.value[numeroCasella] = false
+                val newValues = values.value.updateValue(yCord, xCord, false)
+                values.value = newValues
             }
             xPlayer = !xPlayer
+        }
+    }
+    fun checkWin(): Boolean{
+        var win: Boolean = false
+        for(i in 0..2){
+            win = win||values.value[i][0]==values.value[i][1]&&values.value[i][1]==values.value[i][2]&&values.value[i][0]!=null
+            win = win||values.value[0][i]==values.value[1][i]&&values.value[1][i]==values.value[2][i]&&values.value[0][i]!=null
+        }
+        win = win||values.value[0][0]==values.value[1][1]&&values.value[1][1]==values.value[2][2]&& values.value[0][0]!=null
+        win = win||values.value[0][2]==values.value[1][1]&&values.value[1][1]==values.value[2][0]&&values.value[0][2]!=null
+        return win
+    }
+    fun move(xCord: Int, yCord: Int, navigateToScreen3: (Boolean)->Unit){
+        changeValue(xCord, yCord)
+        if (checkWin()){
+            navigateToScreen3(!xPlayer)
         }
     }
 }
@@ -75,50 +99,54 @@ fun <T> List<List<T?>>.updateValue(i: Int, j: Int, value: T) : List<List<T?>>{
 }
 
 @Composable
-fun TicTacToeScreen2App(){
+fun TicTacToeScreen2App(navigateToScreen3: (Boolean) -> Unit){
     val viewModel = viewModel{ TicTacToeViewModel() }
     TicTacToeSceen2View(
         viewModel.values.value,
-        viewModel::changeValue
+        viewModel::move,
+        navigateToScreen3
     )
 }
 
 @Composable
 fun TicTacToeSceen2View(
-    values: List<Boolean?>,
-    changeValue: (Int)->Unit
+    values: List<List<Boolean?>>,
+    move: (Int, Int, (Boolean)->Unit)->Unit,
+    navigateToScreen3: (Boolean) -> Unit
 ){
-    fun getValue(numeroCasella: Int) : Boolean?{
-        return values[numeroCasella]
+    fun getValue(xCord: Int, yCord: Int) : Boolean?{
+        return values[yCord][xCord]
     }
-    fun writeValue(numeroCasella : Int) : String{
-        when(getValue(numeroCasella)){
+    fun writeValue(xCord : Int, yCord: Int) : String{
+        when(getValue(xCord, yCord)){
             null -> return ""
             true -> return "X"
             false -> return "O"
         }
     }
     Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
-        Row {
-            for (i in 0..2){
-                TextButton(onClick = { changeValue(i) }, Modifier.size(100.dp).border(1.dp, Color.Black)){
-                    Text(writeValue(i))
+        for(j in 0..2){
+            Row {
+                for (i in 0..2){
+                    TextButton(onClick = { move(i,j,navigateToScreen3)  }, Modifier.size(100.dp).border(1.dp, Color.Black)){
+                        Text(writeValue(i,j), color = Color.Blue, fontSize = 4.em)
+                    }
                 }
             }
         }
-        Row {
-            for (i in 0..2){
-                TextButton(onClick = { changeValue(i+3) }, Modifier.size(100.dp).border(1.dp, Color.Black)){
-                    Text(writeValue(i+3))
-                }
-            }
+    }
+}
+
+@Composable
+fun TicTacToeScreen3View(xWin: Boolean, navigateToScreen2: () -> Unit){
+    Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
+        if(xWin){
+            Text("The winner is X")
+        }else{
+            Text("The winner is O")
         }
-        Row {
-            for (i in 0..2){
-                TextButton(onClick = { changeValue(i+6) }, Modifier.size(100.dp).border(1.dp, Color.Black)){
-                    Text(writeValue(i+6))
-                }
-            }
+        Button(onClick = navigateToScreen2){
+            Text("Play Again")
         }
     }
 }
