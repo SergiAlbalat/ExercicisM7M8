@@ -41,8 +41,8 @@ data class Question(val question: String, val answer: List<String>, val valid: I
         if(valid > count){
             val newKey = (1..count).random()
             return Question(question, List(count){
-                if(newKey==it){
-                    answer[valid]
+                if(newKey-1==it){
+                    answer[valid-1]
                 }else{
                     answer[it]
                 }

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,13 +22,9 @@ fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
     TriviaSceen2View(
         viewModel.questionCounter.value,
         navigateToScoreScreen,
-        viewModel.score.value,
-        keys,
-        answers,
-        questions,
-        viewModel::scoreUp,
-        viewModel::printQuestion,
-        viewModel.currentQuestion.value
+        viewModel.currentQuestion.value,
+        viewModel::answer,
+        viewModel.settings
     )
 }
 
@@ -37,55 +32,16 @@ fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
 fun TriviaSceen2View(
     roundNum: Int,
     navigateToScoreScreen: (Int)->Unit,
-    score: Int,
-    keys: List<Int>,
-    answers: List<List<String>>,
-    questions: List<String>,
-    scoreUp: ()->Unit,
-    printQuestion: ()->String,
-    currentQuestion: Question
+    currentQuestion: Question,
+    answer: (Int, (Int)->Unit)->Unit,
+    settings: TrivialSettings
 ){
 
     @Composable
     fun printAnswer(buttonNum: Int){
-        if(roundNum == questionMax+1) {
-            navigateToScoreScreen(score)
-        }else if(difficulty == 3){
-            if(keys[roundNum-1] == buttonNum){
-                Button(onClick = scoreUp, Modifier.padding(10.dp)){
-                    Text(answers[roundNum-1][buttonNum-1])
-                }
-            }else{
-                Button(onClick = {navigateToScoreScreen(score)}, Modifier.padding(10.dp)){
-                    Text(answers[roundNum-1][buttonNum-1])
-                }
-            }
-        }else if(difficulty == 2){
-            if(keys[roundNum-1] == 4){
-                Text(newKey.toString())
-                if(newKey == buttonNum){
-                    Button(onClick = scoreUp, Modifier.padding(10.dp)){
-                        Text(answers[roundNum-1][keys[roundNum-1]])
-                    }
-                }else{
-                    Button(onClick = {navigateToScoreScreen(score)}, Modifier.padding(10.dp)){
-                        Text(answers[roundNum-1][buttonNum-1])
-                    }
-                }
-            }else{
-                Text(newKey.toString())
-                if(keys[roundNum-1] == buttonNum){
-                    Button(onClick = scoreUp, Modifier.padding(10.dp)){
-                        Text(answers[roundNum-1][buttonNum-1])
-                    }
-                }else{
-                    Button(onClick = {navigateToScoreScreen(score)}, Modifier.padding(10.dp)){
-                        Text(answers[roundNum-1][buttonNum-1])
-                    }
-                }
-            }
+        Button(onClick = {answer(buttonNum, navigateToScoreScreen)}){ // HACER QUE AL IMPRIMIR SE ADAPTE AL NUMERO DE RESPUESTAS!!!
+            Text(currentQuestion.answer[buttonNum-1])
         }
-
     }
 
     Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
@@ -93,12 +49,12 @@ fun TriviaSceen2View(
             Text("Round ")
             Text(roundNum.toString())
             Text("/")
-            Text(questionMax.toString())
+            Text(settings.rounds.toString())
         }
         Spacer(Modifier.height(100.dp))
-        Text(printQuestion(), fontSize = 2.em, textAlign = TextAlign.Center)
+        Text(currentQuestion.question, fontSize = 2.em, textAlign = TextAlign.Center)
         Spacer(Modifier.height(30.dp))
-        if(difficulty == 3){
+        if(settings.difficulty == 3){
             Row {
                 printAnswer(1)
                 printAnswer(2)
@@ -107,7 +63,7 @@ fun TriviaSceen2View(
                 printAnswer(3)
                 printAnswer(4)
             }
-        }else if(difficulty == 2){
+        }else if(settings.difficulty == 2){
             Row {
                 printAnswer(1)
                 printAnswer(2)
