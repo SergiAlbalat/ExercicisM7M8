@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +26,6 @@ fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
         viewModel.currentQuestion.value,
         viewModel::answer,
         viewModel.settings,
-        viewModel::generateAnswers
     )
 }
 
@@ -36,13 +36,11 @@ fun TriviaSceen2View(
     currentQuestion: Question,
     answer: (Int, (Int)->Unit)->Unit,
     settings: TrivialSettings,
-    generateAnswers: ()->Unit
 ){
 
     @Composable
     fun printAnswer(buttonNum: Int){
-        generateAnswers()
-        Button(onClick = {answer(buttonNum, navigateToScoreScreen)}){
+        Button(onClick = {answer(buttonNum, navigateToScoreScreen)}, Modifier.padding(10.dp)){
             Text(currentQuestion.answer[buttonNum-1])
         }
     }
@@ -57,25 +55,29 @@ fun TriviaSceen2View(
         Spacer(Modifier.height(100.dp))
         Text(currentQuestion.question, fontSize = 2.em, textAlign = TextAlign.Center)
         Spacer(Modifier.height(30.dp))
-        if(settings.difficulty == 3){
-            Row {
-                printAnswer(1)
-                printAnswer(2)
+        when (settings.difficulty) {
+            3 -> {
+                Row {
+                    printAnswer(1)
+                    printAnswer(2)
+                }
+                Row {
+                    printAnswer(3)
+                    printAnswer(4)
+                }
             }
-            Row {
+            2 -> {
+                Row {
+                    printAnswer(1)
+                    printAnswer(2)
+                }
                 printAnswer(3)
-                printAnswer(4)
             }
-        }else if(settings.difficulty == 2){
-            Row {
-                printAnswer(1)
-                printAnswer(2)
-            }
-            printAnswer(3)
-        }else if(settings.difficulty == 1){
-            Row {
-                printAnswer(1)
-                printAnswer(2)
+            1 -> {
+                Row {
+                    printAnswer(1)
+                    printAnswer(2)
+                }
             }
         }
     }

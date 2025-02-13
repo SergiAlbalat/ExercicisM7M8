@@ -5,24 +5,28 @@ import androidx.lifecycle.ViewModel
 
 class TriviaGameScreenViewModel : ViewModel(){
     val settings = TrivialSettingsManager.get()
-    val score = mutableStateOf(0)
+    private val score = mutableStateOf(0)
     val questionCounter = mutableStateOf(1)
-    val currentQuestion = mutableStateOf(Question(questions[0], answers[0], keys[0]))
-    fun scoreUp(navigateToScoreScreen: (Int) -> Unit){
+    val currentQuestion = mutableStateOf(generateFirstQuestion())
+    private fun generateFirstQuestion(): Question{
+        val firstQuestion = questions[0]
+        firstQuestion.shuffleAnswers()
+        return firstQuestion
+    }
+
+    private fun scoreUp(navigateToScoreScreen: (Int) -> Unit){
         score.value += 100
         if (questionCounter.value < settings.rounds){
             questionCounter.value++
-            currentQuestion.value = nextQuestion(questionCounter.value-1)
+            currentQuestion.value = questions[questionCounter.value-1]
+            generateAnswers()
         }else if(questionCounter.value == settings.rounds){
             navigateToScoreScreen(score.value)
         }
     }
 
-    fun nextQuestion(questionNum: Int) : Question{
-        return Question(questions[questionNum], answers[questionNum], keys[questionNum])
-    }
-
-    fun generateAnswers(){
+    private fun generateAnswers(){
+        currentQuestion.value.shuffleAnswers()
         if(settings.difficulty == 2){
             currentQuestion.value = currentQuestion.value.withAnswers(3)
         }else if(settings.difficulty == 1){
