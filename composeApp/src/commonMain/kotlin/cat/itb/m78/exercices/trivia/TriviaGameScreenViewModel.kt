@@ -9,8 +9,13 @@ class TriviaGameScreenViewModel : ViewModel(){
     val questionCounter = mutableStateOf(1)
     val currentQuestion = mutableStateOf(generateFirstQuestion())
     private fun generateFirstQuestion(): Question{
-        val firstQuestion = questions[0]
+        var firstQuestion = questions[0]
         firstQuestion.shuffleAnswers()
+        if(settings.difficulty == 2){
+            firstQuestion = firstQuestion.withAnswers(3)
+        }else if(settings.difficulty == 1){
+           firstQuestion = firstQuestion.withAnswers(2)
+        }
         return firstQuestion
     }
 
