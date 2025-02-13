@@ -1,7 +1,7 @@
 package cat.itb.m78.exercices.trivia
 
 
-val questions = listOf(
+var questions = listOf(
     Question("When was Dead By Daylight released?",listOf("2018", "2016", "2015", "2017"),2),
     Question("Who is the main villain?",listOf("The Entity", "The Trapper", "The Killer", "The Ace"),1),
     Question("How can the survivors escape from the trials?",listOf("Powering the doors", "Powering the doors or powering the hatch", "Powering The hatch", "Powering the doors or using the hatch"),4),
