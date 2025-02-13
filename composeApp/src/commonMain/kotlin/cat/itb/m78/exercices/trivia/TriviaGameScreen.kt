@@ -10,12 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.lifecycle.viewmodel.compose.viewModel
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
@@ -26,6 +33,7 @@ fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
         viewModel.currentQuestion.value,
         viewModel::answer,
         viewModel.settings,
+        viewModel.score.value
     )
 }
 
@@ -36,11 +44,31 @@ fun TriviaSceen2View(
     currentQuestion: Question,
     answer: (Int, (Int)->Unit)->Unit,
     settings: TrivialSettings,
+    score: Int
 ){
+    var timeLeft by remember { mutableStateOf(settings.time) }
+
+    @Composable
+    fun CountDown() {
+        LaunchedEffect(timeLeft) {
+            delay(1.seconds)
+            timeLeft--
+            if (timeLeft == 0) {
+                navigateToScoreScreen(score)
+            }
+        }
+        Text(timeLeft.toString(), fontSize = 2.em)
+    }
+
+    fun resetCountDown(){
+        timeLeft = settings.time
+    }
 
     @Composable
     fun printAnswer(buttonNum: Int){
-        Button(onClick = {answer(buttonNum, navigateToScoreScreen)}, Modifier.padding(10.dp)){
+        Button(onClick = {
+            answer(buttonNum, navigateToScoreScreen)
+            resetCountDown() }, Modifier.padding(15.dp)){
             Text(currentQuestion.answer[buttonNum-1])
         }
     }
@@ -80,5 +108,6 @@ fun TriviaSceen2View(
                 }
             }
         }
+        CountDown()
     }
 }

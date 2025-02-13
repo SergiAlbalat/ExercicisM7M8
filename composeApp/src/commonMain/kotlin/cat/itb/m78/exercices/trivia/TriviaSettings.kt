@@ -28,7 +28,11 @@ fun TriviaSettingsApp(navigateToScreen1: () -> Unit){
         viewModel::normalDifficulty,
         viewModel::hardDifficulty,
         navigateToScreen1,
-        viewModel::saveExit
+        viewModel::saveExit,
+        viewModel.time.value,
+        viewModel::timeToFive,
+        viewModel::timeToTen,
+        viewModel::timeToTwenty
     )
 }
 
@@ -43,7 +47,11 @@ fun TriviaSettingsView(
     normalDifficulty: ()->Unit,
     hardDifficulty: ()->Unit,
     navigateToScreen1: ()->Unit,
-    saveExit: (()->Unit)->Unit
+    saveExit: (()->Unit)->Unit,
+    time: Int,
+    timeToFive: ()->Unit,
+    timeToTen: ()->Unit,
+    timeToTwenty: ()->Unit
 ){
     @Composable
     fun CreateRadioButtonRound(num: Int, function: ()->Unit){
@@ -65,6 +73,16 @@ fun TriviaSettingsView(
             Text(text)
         }
     }
+    @Composable
+    fun CreateRadioButtonTime(num: Int, function: ()->Unit){
+        Row(verticalAlignment = Alignment.CenterVertically){
+            RadioButton(
+                selected = (time == num),
+                onClick = function
+            )
+            Text(num.toString())
+        }
+    }
     Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally) {
         Row(verticalAlignment = Alignment.CenterVertically){
             Text("Difficulty")
@@ -74,7 +92,7 @@ fun TriviaSettingsView(
                 CreateRadioButtonDifficulty(3, hardDifficulty, "Hard")
             }
         }
-        Spacer(Modifier.height(30.dp))
+        Spacer(Modifier.height(20.dp))
         Row(verticalAlignment = Alignment.CenterVertically){
             Text("Rounds")
             Column {
@@ -83,7 +101,16 @@ fun TriviaSettingsView(
                 CreateRadioButtonRound(15, roundToFifteen)
             }
         }
-        Spacer(Modifier.height(40.dp))
+        Spacer(Modifier.height(20.dp))
+        Row(verticalAlignment = Alignment.CenterVertically){
+            Text("Time")
+            Column {
+                CreateRadioButtonTime(5, timeToFive)
+                CreateRadioButtonTime(10, timeToTen)
+                CreateRadioButtonTime(20, timeToTwenty)
+            }
+        }
+        Spacer(Modifier.height(30.dp))
         Button(onClick = { saveExit(navigateToScreen1) }){
             Text("Return to menu")
         }

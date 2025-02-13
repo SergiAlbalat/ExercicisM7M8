@@ -7,6 +7,7 @@ class TriviaSettingsViewModel : ViewModel(){
     private var settings = TrivialSettingsManager.get()
     val difficulty = mutableStateOf(settings.difficulty)
     val rounds = mutableStateOf(settings.rounds)
+    val time = mutableStateOf(settings.time)
     fun easyDifficulty(){
         difficulty.value = 1
     }
@@ -25,8 +26,17 @@ class TriviaSettingsViewModel : ViewModel(){
     fun roundToFifteen(){
         rounds.value = 15
     }
+    fun timeToFive(){
+        time.value = 5
+    }
+    fun timeToTen(){
+        time.value = 10
+    }
+    fun timeToTwenty(){
+        time.value = 20
+    }
     fun saveExit(navigateToMenuScreen: ()->Unit){
-        settings = TrivialSettings(rounds.value, difficulty.value)
+        settings = TrivialSettings(rounds.value, difficulty.value, time.value)
         TrivialSettingsManager.update(settings)
         navigateToMenuScreen()
     }

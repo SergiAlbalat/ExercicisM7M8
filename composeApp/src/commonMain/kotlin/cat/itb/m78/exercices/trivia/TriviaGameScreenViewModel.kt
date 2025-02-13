@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 
 class TriviaGameScreenViewModel : ViewModel(){
     val settings = TrivialSettingsManager.get()
-    private val score = mutableStateOf(0)
+    val score = mutableStateOf(0)
     val questionCounter = mutableStateOf(1)
     val currentQuestion = mutableStateOf(generateFirstQuestion())
     private fun generateFirstQuestion(): Question{
