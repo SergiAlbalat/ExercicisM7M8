@@ -13,8 +13,7 @@ class TriviaGameScreenViewModel : ViewModel(){
         if (questionCounter.value < settings.rounds){
             questionCounter.value++
             currentQuestion.value = nextQuestion(questionCounter.value-1)
-        }
-        if(questionCounter.value == settings.rounds){
+        }else if(questionCounter.value == settings.rounds){
             navigateToScoreScreen(score.value)
         }
     }
@@ -23,18 +22,19 @@ class TriviaGameScreenViewModel : ViewModel(){
         return Question(questions[questionNum], answers[questionNum], keys[questionNum])
     }
 
-    fun answer(answerNumber: Int, navigateToScoreScreen: (Int)->Unit){
+    fun generateAnswers(){
         if(settings.difficulty == 2){
             currentQuestion.value = currentQuestion.value.withAnswers(3)
         }else if(settings.difficulty == 1){
             currentQuestion.value = currentQuestion.value.withAnswers(2)
         }
+    }
+
+    fun answer(answerNumber: Int, navigateToScoreScreen: (Int)->Unit){
         if(answerNumber == currentQuestion.value.valid){
             scoreUp(navigateToScoreScreen)
         }else{
             navigateToScoreScreen(score.value)
         }
     }
-    // 1 . comprovar si es correcte
-    // 2. preparar nova pregunta
 }

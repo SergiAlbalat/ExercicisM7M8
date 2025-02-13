@@ -24,7 +24,8 @@ fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
         navigateToScoreScreen,
         viewModel.currentQuestion.value,
         viewModel::answer,
-        viewModel.settings
+        viewModel.settings,
+        viewModel::generateAnswers
     )
 }
 
@@ -34,12 +35,14 @@ fun TriviaSceen2View(
     navigateToScoreScreen: (Int)->Unit,
     currentQuestion: Question,
     answer: (Int, (Int)->Unit)->Unit,
-    settings: TrivialSettings
+    settings: TrivialSettings,
+    generateAnswers: ()->Unit
 ){
 
     @Composable
     fun printAnswer(buttonNum: Int){
-        Button(onClick = {answer(buttonNum, navigateToScoreScreen)}){ // HACER QUE AL IMPRIMIR SE ADAPTE AL NUMERO DE RESPUESTAS!!!
+        generateAnswers()
+        Button(onClick = {answer(buttonNum, navigateToScoreScreen)}){
             Text(currentQuestion.answer[buttonNum-1])
         }
     }
@@ -69,6 +72,11 @@ fun TriviaSceen2View(
                 printAnswer(2)
             }
             printAnswer(3)
+        }else if(settings.difficulty == 1){
+            Row {
+                printAnswer(1)
+                printAnswer(2)
+            }
         }
     }
 }
