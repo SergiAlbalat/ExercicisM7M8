@@ -1,4 +1,4 @@
-package cat.itb.m78.exercices.Examen
+package cat.itb.m78.exercices.examen
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
@@ -19,7 +19,7 @@ fun CalculadoraNavegation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = CalculadoraScreens.MainScreen){
         composable<CalculadoraScreens.MainScreen> {
-            CalculadoraApp({navController.navigate(CalculadoraScreens.FinalScreen(it))})
+            CalculadoraApp { navController.navigate(CalculadoraScreens.FinalScreen(it)) }
         }
         composable<CalculadoraScreens.FinalScreen> {
             CalculadoraFinalScreen(it.toRoute<CalculadoraScreens.FinalScreen>().result)

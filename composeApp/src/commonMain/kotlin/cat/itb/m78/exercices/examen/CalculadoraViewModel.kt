@@ -1,4 +1,4 @@
-package cat.itb.m78.exercices.Examen
+package cat.itb.m78.exercices.examen
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
