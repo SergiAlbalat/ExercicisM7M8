@@ -19,6 +19,9 @@ class RememberMyNameViewModel : ViewModel(){
     val userInput = mutableStateOf("")
     init {
         name.value = settings["name"]
+        if(name.value == null){
+            name.value = ""
+        }
     }
     fun userInputChange(it: String){
         userInput.value = it
