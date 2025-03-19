@@ -111,9 +111,9 @@ fun EstatEmbassamentGeneralView(
             items(embassaments){ embassament ->
                 Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally){
                     TextButton(onClick = {saveAndNavigate(embassament.estaci, navigateToDetailedScreen)}){
-                        Text(embassament.estaci, textAlign = TextAlign.Center, fontSize = 1.em)
+                        Text(embassament.estaci, fontSize = 1.em)
                     }
-                    Text("Nivell: ${embassament.nivell}", textAlign = TextAlign.Center)
+                    Text("Nivell: ${embassament.nivell}")
                     Spacer(Modifier.height(20.dp))
                 }
             }
@@ -148,9 +148,9 @@ fun EstatEmbassamentsDetailedView(
         LazyColumn(Modifier.fillMaxSize()) {
             items(embassaments){ embassament ->
                 Column(Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally){
-                    Text(embassament.estaci, textAlign = TextAlign.Center, fontSize = 1.em)
+                    Text(embassament.estaci)
                     Text("Dia: ${embassament.dia}")
-                    Text("Nivell: ${embassament.nivell}", textAlign = TextAlign.Center)
+                    Text("Nivell: ${embassament.nivell}")
                     Text("Volum embassat: ${embassament.volum}")
                     Text("Percentatge de volum embassat: ${embassament.percentatge}")
                     Spacer(Modifier.height(20.dp))

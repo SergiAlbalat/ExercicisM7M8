@@ -41,7 +41,7 @@ fun TriviaGameScreenApp(navigateToScoreScreen: (Int) -> Unit){
 fun TriviaSceen2View(
     roundNum: Int,
     navigateToScoreScreen: (Int)->Unit,
-    currentQuestion: Question,
+    currentQuestion: QuestionApi?,
     answer: (Int, (Int)->Unit)->Unit,
     settings: TrivialSettings,
     score: Int
@@ -69,7 +69,9 @@ fun TriviaSceen2View(
         Button(onClick = {
             answer(buttonNum, navigateToScoreScreen)
             resetCountDown() }, Modifier.padding(15.dp)){
-            Text(currentQuestion.answer[buttonNum-1])
+            if (currentQuestion != null) {
+                Text(currentQuestion.answers[buttonNum-1])
+            }
         }
     }
 
@@ -81,7 +83,9 @@ fun TriviaSceen2View(
             Text(settings.rounds.toString())
         }
         Spacer(Modifier.height(100.dp))
-        Text(currentQuestion.question, fontSize = 2.em, textAlign = TextAlign.Center)
+        if (currentQuestion != null) {
+            Text(currentQuestion.question, fontSize = 2.em, textAlign = TextAlign.Center)
+        }
         Spacer(Modifier.height(30.dp))
         when (settings.difficulty) {
             3 -> {
