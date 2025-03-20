@@ -156,6 +156,7 @@ fun EstatEmbassamentsDetailedView(
                     Spacer(Modifier.height(20.dp))
                 }
             }
+
         }
     }
 }
