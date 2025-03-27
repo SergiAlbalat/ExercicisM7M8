@@ -1,0 +1,14 @@
+CREATE TABLE languages (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL
+);
+INSERT INTO languages(name) VALUES ("català"), ("English");
+
+selectAll:
+SELECT * FROM  languages;
+
+selectNames:
+SELECT name FROM languages;
+
+insert:
+INSERT INTO languages(name) VALUES (?);

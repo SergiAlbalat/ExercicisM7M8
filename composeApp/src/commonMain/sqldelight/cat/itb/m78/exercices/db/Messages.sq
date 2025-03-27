@@ -1,9 +1,15 @@
 CREATE TABLE messages(
-    message TEXT NOT NULL
+    id INTEGER NOT NULL PRIMARY KEY,
+    message TEXT NOT NULL,
+    languageId INTEGER NOT NULL,
+    FOREIGN KEY (languageId) REFERENCES languages(id)
 );
 
 selectAll:
 SELECT * FROM messages;
 
+getLanguage:
+SELECT l.name FROM messages m JOIN languages l ON m.languageId = l.id;
+
 insert:
-INSERT INTO messages VALUES (?);
+INSERT INTO messages(message, languageId) VALUES (?, ?);
