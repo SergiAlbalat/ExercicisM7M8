@@ -22,23 +22,25 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun PersonaListGeneralScreen(
-    navigateToDetailedScreen: (String)->Unit,
-    navigateToFavourites: ()->Unit
+fun FavouritesScreen(
+    navigateToGeneralScreen: ()->Unit,
+    navigateToDetailedScreen: (String) -> Unit
 ){
-    val viewModel = viewModel{ GeneralScreenViewModel() }
-    PersonaListGenerealScreenView(
+    val viewModel = viewModel{ FavouritesScreenViewModel() }
+    FavouritesScreenView(
         viewModel.personas.value,
         navigateToDetailedScreen,
-        viewModel::addFavourite
+        viewModel::removeFavourite,
+        navigateToGeneralScreen
     )
 }
 
 @Composable
-fun PersonaListGenerealScreenView(
+fun FavouritesScreenView(
     personas: List<PersonaWithFavorites>?,
     navigateToDetailedScreen: (String) -> Unit,
-    addFavourite: (PersonaWithFavorites) -> Unit
+    removeFavourite: (PersonaWithFavorites) -> Unit,
+    navigateToGeneralScreen: () -> Unit
 ){
     if(personas != null) {
         LazyColumn(Modifier.fillMaxSize()) {
@@ -47,7 +49,7 @@ fun PersonaListGenerealScreenView(
                     TextButton({navigateToDetailedScreen(persona.persona.apiName)}){
                         Text(persona.persona.name, textAlign = TextAlign.Center)
                     }
-                    TextButton(onClick = {addFavourite(persona)}){
+                    TextButton(onClick = {removeFavourite(persona)}){
                         if (persona.isFab){
                             Icon(
                                 Icons.Outlined.Favorite,

@@ -17,8 +17,8 @@ data class Persona(
     val id: Int,
     val name: String,
     val arcana: String,
-    val description: String,
-    val image: String,
+    val description: String?,
+    val image: String?,
     @SerialName("query") val apiName: String
 )
 

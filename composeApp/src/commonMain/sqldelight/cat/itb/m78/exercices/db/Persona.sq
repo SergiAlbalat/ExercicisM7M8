@@ -1,0 +1,20 @@
+CREATE TABLE persona (
+    id INTEGER NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL,
+    arcana TEXT NOT NULL,
+    description TEXT,
+    image TEXT,
+    apiName TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM persona;
+
+selectOne:
+SELECT * FROM persona WHERE name = ?;
+
+savePersona:
+INSERT INTO persona(name, arcana, description, image, apiName) VALUES (?,?,?,?,?);
+
+deletePersona:
+DELETE FROM persona WHERE name = ?;

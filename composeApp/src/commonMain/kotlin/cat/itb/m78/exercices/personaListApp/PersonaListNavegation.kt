@@ -21,12 +21,21 @@ fun PersonaListNavegation(){
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = PersonaListScreens.GeneralScreen){
         composable<PersonaListScreens.GeneralScreen>{
-            PersonaListGeneralScreen({navController.navigate(PersonaListScreens.DetailedScreen(it))})
+            PersonaListGeneralScreen(
+                {navController.navigate(PersonaListScreens.DetailedScreen(it))},
+                {navController.navigate(PersonaListScreens.FavouritesScreen)}
+            )
         }
         composable<PersonaListScreens.DetailedScreen>{
             PersonaListDetailedScreen(
                 it.toRoute<PersonaListScreens.DetailedScreen>().name,
                 {navController.navigate(PersonaListScreens.GeneralScreen)}
+            )
+        }
+        composable<PersonaListScreens.FavouritesScreen> {
+            FavouritesScreen(
+                {navController.navigate(PersonaListScreens.GeneralScreen)},
+                {navController.navigate(PersonaListScreens.DetailedScreen(it))}
             )
         }
     }
