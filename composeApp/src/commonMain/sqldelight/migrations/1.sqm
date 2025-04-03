@@ -1,7 +1,0 @@
-CREATE TABLE persona (
-    id INTEGER NOT NULL PRIMARY KEY,
-    name TEXT NOT NULL,
-    arcana TEXT NOT NULL,
-    description TEXT,
-    image TEXT
-);

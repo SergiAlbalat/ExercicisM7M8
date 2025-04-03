@@ -12,15 +12,21 @@ data class PersonaWithFavorites(val persona: Persona, val isFab : Boolean)
 
 class GeneralScreenViewModel : ViewModel(){
     val personas = mutableStateOf<List<PersonaWithFavorites>?>(null)
+    val searchInput = mutableStateOf("")
     init {
+        loadData()
+    }
+
+    fun searchInputChange(it: String){
+        searchInput.value = it
         loadData()
     }
 
     private fun loadData() {
         viewModelScope.launch(Dispatchers.Default){
-            val apiList = PersonaListApi.getList()
+            val apiList = PersonaListApi.getList()!!.filter { it.name.startsWith(searchInput.value, ignoreCase = true) }
             val personaswithfavourites = mutableListOf<PersonaWithFavorites>()
-            for(i in apiList!!){
+            for(i in apiList){
                 if(database.personaQueries.selectOne(i.name).executeAsOneOrNull() != null){
                     personaswithfavourites.add(PersonaWithFavorites(i, true))
                 }else{

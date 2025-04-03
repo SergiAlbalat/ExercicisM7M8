@@ -11,7 +11,7 @@ selectAll:
 SELECT * FROM persona;
 
 selectOne:
-SELECT * FROM persona WHERE name = ?;
+SELECT * FROM persona WHERE name LIKE ?;
 
 savePersona:
 INSERT INTO persona(name, arcana, description, image, apiName) VALUES (?,?,?,?,?);
