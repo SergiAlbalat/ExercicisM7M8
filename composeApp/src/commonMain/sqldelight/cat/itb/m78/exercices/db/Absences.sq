@@ -1,0 +1,14 @@
+CREATE TABLE Absences (
+    id INTEGER PRIMARY KEY,
+    student_id INTEGER NOT NULL,
+    date TEXT NOT NULL
+);
+
+selectAll:
+SELECT * FROM Absences;
+
+selectByStudent:
+SELECT  * FROM Absences WHERE student_id = ?;
+
+insertOne:
+INSERT INTO Absences(student_id, date) VALUES (?, ?);
