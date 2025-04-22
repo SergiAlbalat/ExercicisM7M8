@@ -14,6 +14,7 @@ import androidx.camera.core.SurfaceRequest
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.lifecycle.awaitInstance
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -31,6 +32,7 @@ import kotlinx.coroutines.awaitCancellation
 
 class CameraViewModel() : ViewModel(){
     val surferRequest = mutableStateOf<SurfaceRequest?>(null)
+    val photos : MutableList<String> = mutableListOf()
     private val cameraPreviewUseCase = Preview.Builder().build().apply {
         setSurfaceProvider { newSurfaceRequest ->
             surferRequest.value = newSurfaceRequest
@@ -66,6 +68,7 @@ class CameraViewModel() : ViewModel(){
                 }
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     Log.d("CameraPreview", "Photo capture succeeded: ${output.savedUri}")
+                    photos.add(output.savedUri.toString())
                 }
             }
         )
@@ -73,7 +76,7 @@ class CameraViewModel() : ViewModel(){
 }
 
 @Composable
-fun CameraScreen(){
+fun CameraScreen(navigateToGallery: (List<String>)->Unit){
     val viewModel = viewModel{CameraViewModel() }
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -87,8 +90,13 @@ fun CameraScreen(){
                 surfaceRequest = request,
                 modifier = Modifier.fillMaxSize()
             )
-            Button({ viewModel.takePhoto(context) }){
-                Text("Take Photo")
+            Row {
+                Button({ viewModel.takePhoto(context) }){
+                    Text("Take Photo")
+                }
+                Button({navigateToGallery(viewModel.photos)}) {
+                    Text("Gallery")
+                }
             }
         }
     }
