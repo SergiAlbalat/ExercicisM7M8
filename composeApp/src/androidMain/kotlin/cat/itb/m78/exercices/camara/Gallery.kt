@@ -1,14 +1,11 @@
 package cat.itb.m78.exercices.camara
 
-import android.provider.MediaStore
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.ViewModel
 import coil3.compose.AsyncImage
 
 @Composable
