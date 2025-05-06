@@ -9,12 +9,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import cat.itb.m78.exercices.camara.CameraNav
 import cat.itb.m78.exercices.camara.CameraScreen
 import cat.itb.m78.exercices.mapa.MapsScreen
+import cat.itb.m78.exercices.project.PhotoMapNav
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent { MapsScreen() }
+        setContent { PhotoMapNav() }
     }
 }
 
