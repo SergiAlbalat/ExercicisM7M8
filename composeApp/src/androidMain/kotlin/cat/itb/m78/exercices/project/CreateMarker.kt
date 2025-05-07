@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
-fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit){
+fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit, navigateToCamera:()->Unit){
     val viewModel = viewModel{CreateMarkerViewModel(lat, lon)}
     CreateMarkerScreen(
         viewModel.title.value,
@@ -20,7 +20,8 @@ fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit){
         viewModel::titleChange,
         viewModel::descriptionChange,
         viewModel::addMarker,
-        navigateToMap
+        navigateToMap,
+        navigateToCamera
     )
 }
 
@@ -31,7 +32,8 @@ fun CreateMarkerScreen(
     titleChange: (String)->Unit,
     descriptionChange: (String)->Unit,
     addMarker: (()->Unit)->Unit,
-    navigateToMap: () -> Unit
+    navigateToMap: () -> Unit,
+    navigateToCamera:()->Unit
 ){
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
         TextField(
@@ -44,6 +46,7 @@ fun CreateMarkerScreen(
             label = {Text("Description")},
             onValueChange = descriptionChange
         )
+        Button(onClick = { navigateToCamera() })
         Button(onClick = { (addMarker(navigateToMap)) }) {
             Text("Add Marker")
         }

@@ -102,7 +102,8 @@ fun PhotoMapNav(){
                         CreateMarker(
                             it.toRoute<PhotoMapScreens.CreateMarker>().lat.toDouble(),
                             it.toRoute<PhotoMapScreens.CreateMarker>().long.toDouble(),
-                            { navController.navigate(PhotoMapScreens.Map) }
+                            { navController.navigate(PhotoMapScreens.Map) },
+                            {navController.navigate(PhotoMapScreens.Camera)}
                         )
                     }
                 }
