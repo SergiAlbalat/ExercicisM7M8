@@ -2,6 +2,7 @@ package cat.itb.m78.exercices.project
 
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Log
@@ -32,7 +33,7 @@ class CameraProjectViewModel() : ViewModel(){
         )
         try { awaitCancellation() } finally { processCameraProvider.unbindAll() }
     }
-    fun takePhoto(context: Context, onFinish:()->Unit) {
+    fun takePhoto(context: Context, onPhotoCaptured: (Uri?) -> Unit) {
         val name = "photo_"+ System.nanoTime()
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
@@ -55,7 +56,7 @@ class CameraProjectViewModel() : ViewModel(){
                 }
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     Log.d("CameraPreview", "Photo capture succeeded: ${output.savedUri}")
-                    navController.previousBackStackEntry ?.savedStateHandle ?.set(PHOTO_URI_KEY, output.savedUri.toString())
+                    onPhotoCaptured(output.savedUri)
                 }
             }
         )

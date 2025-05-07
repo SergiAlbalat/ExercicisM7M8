@@ -106,6 +106,19 @@ fun PhotoMapNav(){
                             {navController.navigate(PhotoMapScreens.Camera)}
                         )
                     }
+                    composable<PhotoMapScreens.Camera>{
+                        CameraScreen(
+                            onPhotoCaptured = { savedUri ->
+                                savedUri?.let { uri ->
+                                    navController.previousBackStackEntry
+                                        ?.savedStateHandle
+                                        ?.set("PHOTO_URI_KEY", uri.toString())
+
+                                    navController.popBackStack()
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
