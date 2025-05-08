@@ -3,6 +3,7 @@ package cat.itb.m78.exercices.project
 import android.net.Uri
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,6 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.get
+import com.russhwolf.settings.set
+
 
 @Composable
 fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit, navigateToCamera:()->Unit, savedStateHandler: SavedStateHandle){
@@ -27,7 +32,8 @@ fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit, navigateToCam
         viewModel::addMarker,
         navigateToMap,
         navigateToCamera,
-        photoUri
+        photoUri,
+        viewModel::lastPhoto
     )
 }
 
@@ -40,7 +46,8 @@ fun CreateMarkerScreen(
     addMarker: (()->Unit)->Unit,
     navigateToMap: () -> Unit,
     navigateToCamera:()->Unit,
-    photoUri: String?
+    photoUri: String?,
+    lastPhoto: ()->Unit
 ){
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center){
         TextField(
@@ -53,11 +60,16 @@ fun CreateMarkerScreen(
             label = {Text("Description")},
             onValueChange = descriptionChange
         )
-        Button(onClick = { navigateToCamera() }){
-            AsyncImage(
-                model = photoUri,
-                contentDescription = null
-            )
+        Row{
+            Button(onClick = { navigateToCamera() }){
+                AsyncImage(
+                    model = photoUri,
+                    contentDescription = null
+                )
+            }
+            Button(onClick = lastPhoto) {
+                Text("Utilitzar ultima foto feta")
+            }
         }
         Button(onClick = { (addMarker(navigateToMap)) }) {
             Text("Add Marker")

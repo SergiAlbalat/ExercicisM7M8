@@ -41,6 +41,10 @@ fun MapScreen(
             cameraPositionState = cameraPositionState,
             onMapLongClick = {coords-> navigateToCreateMarker(coords.latitude, coords.longitude)}
         ){
+            AdvancedMarker(
+                state = MarkerState(position = LatLng(41.4534028,2.1861224)),
+                title = "ITB"
+            )
             for(i in markers){
                 AdvancedMarker(
                     state = MarkerState(position = i.coords),
