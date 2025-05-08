@@ -99,11 +99,13 @@ fun PhotoMapNav(){
                         List()
                     }
                     composable<PhotoMapScreens.CreateMarker> {
+                        it.savedStateHandle
                         CreateMarker(
                             it.toRoute<PhotoMapScreens.CreateMarker>().lat.toDouble(),
                             it.toRoute<PhotoMapScreens.CreateMarker>().long.toDouble(),
                             { navController.navigate(PhotoMapScreens.Map) },
-                            {navController.navigate(PhotoMapScreens.Camera)}
+                            {navController.navigate(PhotoMapScreens.Camera)},
+                            it.savedStateHandle
                         )
                     }
                     composable<PhotoMapScreens.Camera>{

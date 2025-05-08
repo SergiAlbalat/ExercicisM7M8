@@ -11,12 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.compose.AsyncImage
 
 @Composable
-fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit, navigateToCamera:()->Unit){
-    val viewModel: CreateMarkerViewModel = viewModel()
+fun CreateMarker(lat: Double, lon: Double, navigateToMap:()->Unit, navigateToCamera:()->Unit, savedStateHandler: SavedStateHandle){
+    val viewModel: CreateMarkerViewModel = viewModel{ CreateMarkerViewModel(lat, lon, savedStateHandler) }
     val photoUri = viewModel.photoUri.collectAsState().value
     CreateMarkerScreen(
         viewModel.title.value,
