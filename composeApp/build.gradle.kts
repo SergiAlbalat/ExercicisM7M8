@@ -64,6 +64,8 @@ kotlin {
             implementation("io.coil-kt.coil3:coil-network-ktor3:3.1.0")
             implementation("io.github.koalaplot:koalaplot-core:0.8.0")
             implementation("app.cash.sqldelight:coroutines-extensions:2.0.2")
+            implementation("com.squareup.retrofit2:retrofit:2.9.0")
+            implementation("com.squareup.retrofit2:converter-gson:2.9.0")
         }
 
         commonTest.dependencies {

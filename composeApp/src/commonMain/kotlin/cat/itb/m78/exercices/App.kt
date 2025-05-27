@@ -2,6 +2,8 @@ package cat.itb.m78.exercices
 
 
 import androidx.compose.runtime.*
+import cat.itb.m78.exercices.Sensor_ChemSecure.ChemSecure_Api
+import cat.itb.m78.exercices.Sensor_ChemSecure.SensorForm
 import cat.itb.m78.exercices.State.SayHello
 import cat.itb.m78.exercices.api.CountriesApp
 import cat.itb.m78.exercices.api.EstatEmbassamentsNavegation
@@ -17,5 +19,6 @@ import cat.itb.m78.exercices.trivia.TriviaNavegation
 
 @Composable
 internal fun App() = AppTheme {
-    StudentListNavigation()
+    val api = ChemSecure_Api()
+    SensorForm(api)
 }
