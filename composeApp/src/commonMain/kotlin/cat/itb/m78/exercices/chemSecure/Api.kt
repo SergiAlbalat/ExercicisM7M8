@@ -13,7 +13,6 @@ import kotlinx.serialization.SerialName
 
 @Serializable
 data class Sensor (
-    val temperature: Int,
     val volum: Float,
     val id : Int
 )
@@ -39,9 +38,9 @@ class ChemSecure_Api (id : String="") {
     }
     suspend fun sendSensorData(sensor: Sensor): Boolean {
         return try {
-            client.post(url) {
+            client.post(url + "/update-volume/${sensor.id}") {
                 contentType(ContentType.Application.Json)
-                setBody(sensor) // Enviar objeto Sensor
+                setBody(sensor.volum) // Enviar objeto Sensor
             }
             return true // Éxito
         } catch (e: Exception) {

@@ -18,26 +18,18 @@ import kotlinx.coroutines.*
 
 @Composable
 fun SensorForm(api: ChemSecure_Api) {
-    var temperature by remember { mutableStateOf(25f) }
     var volume by remember { mutableStateOf(50f) }
-    var id by remember { mutableStateOf(1f) }
     var tanks by remember { mutableStateOf<List<Tank>?>(null) }
     var tank by remember { mutableStateOf<Tank?>(null) }
     var isExpanded by remember { mutableStateOf(false) }
-
+    CoroutineScope(Dispatchers.Default).launch{
+        tanks = api.getTanks()
+    }
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Temperatura: ${temperature.toInt()}°C")
-        Slider(value = temperature, onValueChange = { temperature = it }, valueRange = 0f..100f)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("Volumen: ${volume}")
-        Slider(value = volume, onValueChange = { volume = it }, valueRange = 0f..100f)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text("ID: ${id.toInt()}")
-        Slider(value = id, onValueChange = { id = it }, valueRange = 1f..100f, steps = 99)
+        if(tank != null){
+            Text("Volumen: ${volume}")
+            Slider(value = volume, onValueChange = { volume = it }, valueRange = 0f..tank!!.capacity.toFloat())
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -68,7 +60,7 @@ fun SensorForm(api: ChemSecure_Api) {
         Spacer(Modifier.height(16.dp))
 
         Button(onClick = {
-            val sensor = Sensor(temperature.toInt(), volume, id.toInt())
+            val sensor = Sensor(volume, tank!!.id.toInt())
 
             CoroutineScope(Dispatchers.IO).launch {
                 val success = api.sendSensorData(sensor)
