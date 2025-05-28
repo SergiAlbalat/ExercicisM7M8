@@ -19,7 +19,7 @@ data class Sensor (
 
 @Serializable
 data class Tank(
-    @SerialName("Id") val id: String,
+    @SerialName("Id") val id: Int,
     @SerialName("Capacity") val capacity: Double,
     @SerialName("CurrentVolume") val currentVolume: Double,
     @SerialName("Type") val type: Int
@@ -28,7 +28,7 @@ data class Tank(
 
 class ChemSecureApi (id : String="") {
     // Atributs
-    val url = "https://chemsecure-g3f3endkdxc6fsd4.northeurope-01.azurewebsites.net/api";
+    val url = "https://chemsecureapi2-e3esdkerc4eeg0h4.northeurope-01.azurewebsites.net/api";
     private val client = HttpClient() {
         install(ContentNegotiation) {
             json(Json {
@@ -49,7 +49,7 @@ class ChemSecureApi (id : String="") {
         }
     }
     suspend fun getTanks(): List<Tank>{
-        return client.get("$url/Tank/user").body<List<Tank>>()
+        return client.get("$url/Tank").body<List<Tank>>()
     }
     fun close() {
         client.close() // Cierra el cliente cuando no se necesite
