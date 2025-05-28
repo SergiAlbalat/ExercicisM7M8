@@ -6,16 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import cat.itb.m78.exercices.camara.CameraNav
-import cat.itb.m78.exercices.camara.CameraScreen
-import cat.itb.m78.exercices.mapa.MapsScreen
-import cat.itb.m78.exercices.project.PhotoMapNav
+import cat.itb.m78.exercices.chemSecure.ChemSecureApi
+import cat.itb.m78.exercices.chemSecure.SensorForm
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContent { PhotoMapNav() }
+        val api = ChemSecureApi()
+        setContent { SensorForm(api) }
     }
 }
 
